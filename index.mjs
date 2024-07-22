@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import dbConnect from './db/conn.mjs';
 dotenv.config();
 
 const PORT = 5050;
@@ -21,6 +22,9 @@ app.use('/grades', grades_agg);
 app.use((err, _req, res, next) => {
   res.status(500).send('Seems like we messed up somewhere...');
 });
+
+// Connect to the database
+await dbConnect();
 
 // Start the Express server
 app.listen(PORT, () => {

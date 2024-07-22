@@ -1,16 +1,21 @@
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const client = new MongoClient(process.env.ATLAS_URI);
+const dbURI = process.env.ATLAS_URI;
 
-let conn;
-try {
-  conn = await client.connect();
-} catch (e) {
-  console.error(e);
+const options = {
+  dbName: 'sample_training',
+};
+
+async function dbConnect() {
+  try {
+    await mongoose.connect(dbURI, options);
+    console.log('Connected to the database');
+  } catch (error) {
+    console.error('Error connecting to the database: ', error);
+    process.exit(1);
+  }
 }
 
-let db = conn.db('sample_training');
-
-export default db;
+export default dbConnect;
